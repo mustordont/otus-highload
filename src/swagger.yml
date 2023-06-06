@@ -1,0 +1,158 @@
+openapi: 3.0.0
+paths:
+  /version:
+    get:
+      operationId: AppController_root
+      summary: Service version
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppInfo'
+  /user/user:
+    get:
+      operationId: UsersController_userInfo
+      summary: Get block by id
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: number
+  /user/{block_id}:
+    get:
+      operationId: UsersController_get
+      summary: Get block by Mongo.ObjectId
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required: &ref_0
+                  - statusCode
+                  - message
+          description: ''
+  /user/register:
+    post:
+      operationId: UsersController_register
+      summary: Example of transform and validate request
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required: *ref_0
+          description: ''
+info:
+  title: nestjs-starter
+  description: Trend NestJs Starter
+  version: 1.3.7
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: apiKey
+      in: query
+      name: auth_token
+  schemas:
+    AppInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+      required:
+        - name
+        - version
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        first_name:
+          type: string
+        second_name:
+          type: string
+        age:
+          type: number
+        birthdate:
+          type: string
+        biography:
+          type: string
+        city:
+          type: string
+      required:
+        - id
+        - first_name
+        - second_name
+        - age
+        - birthdate
+        - biography

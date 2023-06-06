@@ -1,0 +1,12 @@
+{
+    "eslintIntegration": true,
+    "jsxSingleQuote": true,
+    "printWidth": 140,
+    "singleQuote": true,
+    "stylelintIntegration": true,
+    "tslintIntegration": true,
+    "tabWidth": 4,
+    "arrowParens": "avoid",
+    "trailingComma": "all",
+    "useTabs": false
+}

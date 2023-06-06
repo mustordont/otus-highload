@@ -1,0 +1,79 @@
+name: Helm Release Build & Deploy
+run-name: Release to ${{ github.event.inputs.LOCATION }} from ${{ github.ref_name }} branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      BUILD:
+        description: 'Build image'
+        required: true
+        type: boolean
+        default: 'true'
+      LOCATION:
+        description: 'Select environment (stage, team-01 - team-05)'
+        required: true
+        default: team-04
+        type: choice
+        options:
+          - none
+          - stage
+          - team-01
+          - team-02
+          - team-03
+          - team-04
+          - team-05
+          - team-06
+      NOTIFY:
+        description: 'Send message after deploy'
+        required: true
+        type: boolean
+        default: 'true'
+
+jobs:
+  version:
+    uses: trend-dev/workflows/.github/workflows/version.yml@master
+
+  docker:
+    needs: version
+    uses: trend-dev/workflows/.github/workflows/docker.yml@master
+    with:
+      APP_NAME: ${{ needs.version.outputs.APP_NAME }}
+      APP_VERSION: ${{ needs.version.outputs.APP_VERSION }}
+      BUILD: ${{ github.event.inputs.BUILD }}
+      DOCKERFILE: './tools/Dockerfile'
+    secrets:
+      DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      GPT_TOKEN: ${{ secrets.GPT_TOKEN }}
+
+  chart:
+    needs: [ version, docker ]
+    uses: trend-dev/workflows/.github/workflows/chart.yml@master
+    with:
+      APP_NAME: ${{ needs.version.outputs.APP_NAME }}
+      APP_VERSION: '${{ needs.version.outputs.APP_VERSION }}-${{ github.sha }}'
+      CHART_FOLDER: './tools/charts/${{ needs.version.outputs.APP_NAME }}'
+    secrets:
+      DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+
+  release_to_dev:
+    needs: [ version, chart ]
+    uses: trend-dev/workflows/.github/workflows/deploy-standalone.yml@master
+    with:
+      APP_NAME: ${{ needs.version.outputs.APP_NAME }}
+      APP_VERSION: '${{ needs.version.outputs.APP_VERSION }}-${{ github.sha }}'
+      LOCATION: ${{ github.event.inputs.LOCATION }}
+    secrets:
+      TOKEN: ${{ secrets.ROOT_TOKEN }}
+      KUBE_CONFIG: ${{ secrets.DEV_KUBE_CONFIG }}
+      DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+  notification:
+    needs: [ release_to_dev ]
+    if: github.event.inputs.NOTIFY == 'true'
+    uses: trend-dev/workflows/.github/workflows/notification.yml@master
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TR_CHANNEL }}
