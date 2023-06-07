@@ -11,9 +11,9 @@ export class DbConfig {
     postgres: string;
 }
 
-export class ApiConfig {
+export class AuthConfig {
     @IsString()
-    auth: string;
+    secret: string;
 }
 
 @Expose()
@@ -34,8 +34,8 @@ export class ConfigFile {
 
     @IsNotEmpty()
     @ValidateNested()
-    @Type(() => ApiConfig)
-    api: ApiConfig;
+    @Type(() => AuthConfig)
+    auth: AuthConfig;
 }
 
 @Injectable()

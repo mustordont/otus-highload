@@ -12,6 +12,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppInfo'
+  /login:
+    post:
+      operationId: LoginController_login
+      summary: get jwt
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppInfo'
+        '201':
+          description: ''
   /user/user:
     get:
       operationId: UsersController_userInfo
@@ -24,10 +44,10 @@ paths:
             application/json:
               schema:
                 type: number
-  /user/{block_id}:
+  /user/get/{id}:
     get:
       operationId: UsersController_get
-      summary: Get block by Mongo.ObjectId
+      summary: Get user by id
       parameters: []
       responses:
         '200':
@@ -35,9 +55,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User'
         '400':
           content:
             application/json:
@@ -64,6 +82,8 @@ paths:
                   - statusCode
                   - message
           description: ''
+      security:
+        - token: []
   /user/register:
     post:
       operationId: UsersController_register
@@ -120,7 +140,7 @@ components:
       bearerFormat: JWT
       type: apiKey
       in: query
-      name: auth_token
+      name: token
   schemas:
     AppInfo:
       type: object
@@ -132,6 +152,16 @@ components:
       required:
         - name
         - version
+    LoginRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        password:
+          type: string
+      required:
+        - id
+        - password
     User:
       type: object
       properties:
@@ -149,6 +179,8 @@ components:
           type: string
         city:
           type: string
+        password:
+          type: string
       required:
         - id
         - first_name
@@ -156,3 +188,4 @@ components:
         - age
         - birthdate
         - biography
+        - password

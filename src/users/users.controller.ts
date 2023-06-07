@@ -3,8 +3,8 @@ import { BadRequestException, Body, Controller, Get, HttpStatus, Logger, Param, 
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import { UsersService } from './users.service';
-import { B2bGuard, UserAuthData } from '../core';
 import { User } from './user.entity';
+import { UserGuard } from '../auth/user-guard.service';
 
 // @ApiBearerAuth()
 // @UseGuards(B2bGuard)
@@ -21,18 +21,18 @@ export class UsersController {
         return 'user';
     }
 
-    @ApiOperation({ summary: 'Get block by Mongo.ObjectId' })
+    @UserGuard()
+    @ApiOperation({ summary: 'Get user by id' })
     @ApiException(() => [BadRequestException])
-    @Get(':block_id')
-    public async get(@Param() { block_id }: any) {
-        return this.service.findAll();
+    @Get('get/:id')
+    public async get(@Param() { id }: { id: string }) {
+        return this.service.findOne(id);
     }
 
     @ApiOperation({ summary: 'Example of transform and validate request' })
     @ApiException(() => [BadRequestException])
     @Post('register')
     public register(@Body() user: User) {
-        Logger.log(user);
         return this.service.create(user);
     }
 }

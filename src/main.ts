@@ -6,7 +6,8 @@ import { AppModule } from './app.module';
 import { name, description, version } from '../package.json';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
-import { B2bGuard, ConfigService, LoggerService, TrendException } from './core';
+import { ConfigService, LoggerService, TrendException } from './core';
+import { UserGuardService } from './auth/user-guard.service';
 
 async function bootstrap() {
     const logger = new LoggerService();
@@ -32,7 +33,7 @@ async function bootstrap() {
             .addBearerAuth({
                 type: 'apiKey',
                 in: 'query',
-                name: B2bGuard.TOKEN_NAME,
+                name: UserGuardService.TOKEN_NAME,
             })
             .build();
         const document = SwaggerModule.createDocument(app, swaggerConfig);

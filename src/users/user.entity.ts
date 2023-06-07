@@ -25,6 +25,9 @@ export class User implements UserGenerated {
     @Column()
     city?: string;
 
+    @Column()
+    password: string;
+
     // @OneToMany(type => Photo, photo => photo.user)
     // photos: Photo[];
 }

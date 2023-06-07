@@ -1,7 +1,7 @@
 port: 8000
 logLevel: 'debug'
 enableSwagger: true
+auth:
+  secret: 'local_secret_key'
 db:
   postgres: 'mongodb://host.docker.internal:27017/trend-dev'
-api:
-    auth: 'http://auth.trend-dev.ru'
