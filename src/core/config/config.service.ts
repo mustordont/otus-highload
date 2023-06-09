@@ -6,9 +6,21 @@ import * as yaml from 'js-yaml';
 import { join } from 'path';
 import { ELogLevel } from '../logger';
 
-export class DbConfig {
+export class PostgresConfig {
     @IsString()
-    postgres: string;
+    host: string;
+    @IsNumber()
+    port: number;
+    username: string;
+    @IsString()
+    password: string;
+}
+
+export class DbConfig {
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => PostgresConfig)
+    postgres: PostgresConfig;
 }
 
 export class AuthConfig {

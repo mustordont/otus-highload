@@ -1,15 +1,8 @@
-import { Body, Controller, ForbiddenException, Get, HttpStatus, NotFoundException, Post } from '@nestjs/common';
-import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
-import { LoginRequest } from './dto/login.dto';
-import { UsersService } from '../users/users.service';
+import { Body, Controller, ForbiddenException, HttpStatus, NotFoundException, Post } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { LoginRequest, LoginResponse } from './dto/login.dto';
 import { AuthService } from '../auth/auth.service';
-
-class AppInfo {
-    @ApiProperty()
-    name: string;
-    @ApiProperty()
-    version: string;
-}
+import { UsersService } from './users.service';
 
 @Controller({
     path: 'login',
@@ -20,10 +13,10 @@ export class LoginController {
     @ApiOperation({ summary: 'get jwt' })
     @ApiResponse({
         status: HttpStatus.OK,
-        type: AppInfo,
+        type: LoginResponse,
     })
     @Post()
-    public async login(@Body() request: LoginRequest): Promise<{ token: string }> {
+    public async login(@Body() request: LoginRequest): Promise<LoginResponse> {
         const user = await this.userService.findOne(request.id);
         if (!user) {
             throw new NotFoundException();

@@ -6,3 +6,8 @@ export class LoginRequest {
     @IsString()
     password: string;
 }
+
+export class LoginResponse {
+    @IsString()
+    token: string;
+}

@@ -3,6 +3,7 @@ import {
     BadRequestException,
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Injectable,
     NotFoundException,
     UseGuards,
@@ -19,7 +20,7 @@ export class UserGuardService implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const client_token = request.query[UserGuardService.TOKEN_NAME] || request.headers?.authorization;
-        if (!client_token) throw new BadRequestException();
+        if (!client_token) throw new ForbiddenException();
 
         const user = await this.verifyToken(client_token);
         if (!user) throw new NotFoundException();
@@ -42,5 +43,5 @@ export class UserGuardService implements CanActivate {
 }
 
 export const UserGuard = () => {
-    return applyDecorators(ApiBearerAuth(UserGuardService.TOKEN_NAME), UseGuards(UserGuardService));
+    return applyDecorators(ApiBearerAuth(), ApiBearerAuth(UserGuardService.TOKEN_NAME), UseGuards(UserGuardService));
 };

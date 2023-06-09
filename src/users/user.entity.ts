@@ -1,3 +1,5 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { classToPlain, Exclude } from 'class-transformer';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 // import { Photo } from '../photos/photo.entity';
 import { User as UserGenerated } from '../../gen/model/user';
@@ -25,8 +27,14 @@ export class User implements UserGenerated {
     @Column()
     city?: string;
 
-    @Column()
+    @ApiHideProperty()
+    @Exclude({ toPlainOnly: true })
+    @Column({ select: false })
     password: string;
+
+    toJSON() {
+        return classToPlain(this);
+    }
 
     // @OneToMany(type => Photo, photo => photo.user)
     // photos: Photo[];

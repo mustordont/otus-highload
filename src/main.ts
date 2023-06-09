@@ -1,4 +1,4 @@
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { dump } from 'js-yaml';
@@ -22,7 +22,6 @@ async function bootstrap() {
             exceptionFactory: TrendException,
         }),
     );
-    app.enableVersioning({ type: VersioningType.URI });
     const config = app.get(ConfigService);
 
     if (config.enableSwagger) {
@@ -48,7 +47,7 @@ async function bootstrap() {
 
     const port = process.env.PORT || config.port;
     await app.listen(port, () => {
-        logger.log(`Start listening at http://localhost:${port}`);
+        logger.log(`Start listening at http://127.0.0.1:${port}`);
     });
 }
 

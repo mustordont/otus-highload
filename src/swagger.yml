@@ -29,26 +29,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppInfo'
+                $ref: '#/components/schemas/LoginResponse'
         '201':
-          description: ''
-  /user/user:
-    get:
-      operationId: UsersController_userInfo
-      summary: Get block by id
-      parameters: []
-      responses:
-        '200':
           description: ''
           content:
             application/json:
               schema:
-                type: number
+                $ref: '#/components/schemas/LoginResponse'
   /user/get/{id}:
     get:
       operationId: UsersController_get
       summary: Get user by id
-      parameters: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema: {}
       responses:
         '200':
           description: ''
@@ -83,11 +79,12 @@ paths:
                   - message
           description: ''
       security:
+        - bearer: []
         - token: []
   /user/register:
     post:
       operationId: UsersController_register
-      summary: Example of transform and validate request
+      summary: Register new user
       parameters: []
       requestBody:
         required: true
@@ -127,9 +124,9 @@ paths:
                 required: *ref_0
           description: ''
 info:
-  title: nestjs-starter
-  description: Trend NestJs Starter
-  version: 1.3.7
+  title: otus-highload
+  description: ''
+  version: 0.0.1
   contact: {}
 tags: []
 servers: []
@@ -162,6 +159,13 @@ components:
       required:
         - id
         - password
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+        - token
     User:
       type: object
       properties:
@@ -179,8 +183,6 @@ components:
           type: string
         city:
           type: string
-        password:
-          type: string
       required:
         - id
         - first_name
@@ -188,4 +190,3 @@ components:
         - age
         - birthdate
         - biography
-        - password

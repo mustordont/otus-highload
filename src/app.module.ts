@@ -12,15 +12,11 @@ import { AuthModule } from './auth';
             inject: [ConfigService],
             imports: [CoreModule],
             useFactory: async (configService: ConfigService) => ({
+                ...configService.db.postgres,
                 type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'postgres',
-                password: 'example',
-                database: 'postgres',
                 // entities: [],
                 synchronize: true,
-                autoLoadEntities: true
+                autoLoadEntities: true,
             }),
         }),
         CoreModule,

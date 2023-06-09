@@ -4,4 +4,9 @@ enableSwagger: true
 auth:
   secret: 'local_secret_key'
 db:
-  postgres: 'mongodb://host.docker.internal:27017/trend-dev'
+  postgres:
+    host: 127.0.0.1
+    port: 5432
+    username: 'postgres'
+    password: 'example'
+    database: 'postgres'
