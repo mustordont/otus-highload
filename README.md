@@ -45,7 +45,8 @@ $ docker build -t otus-highload -f ./tools/Dockerfile .
 ### Запуск контейнера
 
 Конфигурация по умолчанию не применяется, нужно монтировать в контейнер при старте.
+Доступность локальных сервисов внутри контейнера обеспечивается через `host.docker.internal`
 
 ```bash
-$ docker run -d --rm -v "$(pwd)"/config.yaml:/app/config.yaml --net=host otus-highload
+$ docker run -d --rm -v "$(pwd)"/config.yaml:/app/config.yaml -p 8000:8000 otus-highload
 ```
