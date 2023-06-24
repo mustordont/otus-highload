@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { CommandModule } from './commands/command.module';
 import { CoreModule, ConfigService } from './core';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './users';
 import { AuthModule } from './auth';
 
 @Module({
@@ -19,6 +20,7 @@ import { AuthModule } from './auth';
                 autoLoadEntities: true,
             }),
         }),
+        CommandModule,
         CoreModule,
         AuthModule,
         UsersModule,

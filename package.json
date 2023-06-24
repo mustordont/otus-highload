@@ -25,7 +25,8 @@
         "release": "standard-version",
         "release:patch": "standard-version --release-as patch",
         "release:minor": "standard-version --release-as minor",
-        "release:major": "standard-version --release-as major"
+        "release:major": "standard-version --release-as major",
+        "migrate": "npx nestjs-command migrate"
     },
     "dependencies": {
         "@nanogiants/nestjs-swagger-api-exception-decorator": "^1.6.5",
