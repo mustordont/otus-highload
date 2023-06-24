@@ -1,6 +1,5 @@
 import {
     applyDecorators,
-    BadRequestException,
     CanActivate,
     ExecutionContext,
     ForbiddenException,

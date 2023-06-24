@@ -39,3 +39,5 @@ lerna-debug.log*
 config.yaml
 .env
 !config.yaml
+
+raw.*

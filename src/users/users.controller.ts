@@ -1,7 +1,7 @@
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import { ApiBearerAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UserGuard } from '../auth/user-guard.service';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
