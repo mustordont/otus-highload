@@ -29,7 +29,7 @@ export class User implements UserGenerated {
 
     @ApiHideProperty()
     @Exclude({ toPlainOnly: true })
-    @Column({ select: false })
+    @Column()
     password: string;
 
     toJSON() {

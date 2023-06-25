@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { ConfigService } from '../core';
 import { AuthService } from '../auth/auth.service';
+import { UserSearchRequest } from './dto';
+import { explain } from './explain';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +26,19 @@ export class UsersService {
 
     findOne(id: string): Promise<User | null> {
         return this.usersRepository.findOneBy({ id });
+    }
+
+    async search(request: UserSearchRequest): Promise<any> {
+        const q = this.usersRepository
+            .createQueryBuilder('user')
+            .where('user.first_name like :first_name and user.second_name like :second_name', {
+                first_name: `${request.first_name}%`,
+                second_name: `${request.second_name}%`,
+            })
+            .orderBy('id')
+            .limit(20);
+        console.log(await explain(q as any, this.usersRepository.manager.connection));
+        return q.getMany();
     }
 
     async remove(id: number): Promise<void> {

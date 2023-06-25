@@ -34,7 +34,6 @@
                 },
                 "extendDefaults": true
             }
-        ],
-        "no-console": 2
+        ]
     }
 }

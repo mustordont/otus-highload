@@ -81,6 +81,55 @@ paths:
       security:
         - bearer: []
         - token: []
+  /user/search:
+    get:
+      operationId: UsersController_search
+      summary: Search user by first_name and last_name
+      parameters:
+        - name: first_name
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: second_name
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required: *ref_0
+          description: ''
+      security:
+        - bearer: []
+        - token: []
   /user/register:
     post:
       operationId: UsersController_register
