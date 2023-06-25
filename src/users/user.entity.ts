@@ -18,13 +18,13 @@ export class User implements UserGenerated {
     @Column()
     age: number;
 
-    @Column()
+    @Column({ nullable: true })
     birthdate: string;
 
-    @Column()
+    @Column({ nullable: true })
     biography: string;
 
-    @Column()
+    @Column({ nullable: true })
     city?: string;
 
     @ApiHideProperty()

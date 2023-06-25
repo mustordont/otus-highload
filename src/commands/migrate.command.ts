@@ -18,6 +18,8 @@ export class MigrateCommand {
         command: 'migrate',
     })
     async migrate() {
+        // download file from
+        // https://raw.githubusercontent.com/OtusTeam/highload/master/homework/people.csv
         const readableStream = fs
             .createReadStream(path.join(__dirname, 'raw.githubusercontent.com_OtusTeam_highload_master_homework_people.csv'))
             .pipe(parse({ delimiter: ',', from_line: 1 }));

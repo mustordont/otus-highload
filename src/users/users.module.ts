@@ -10,5 +10,6 @@ import { LoginController } from './login.controller';
     imports: [TypeOrmModule.forFeature([User]), AuthModule],
     providers: [UsersService],
     controllers: [LoginController, UsersController],
+    exports: [TypeOrmModule],
 })
 export class UsersModule {}
