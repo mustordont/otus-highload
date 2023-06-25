@@ -50,3 +50,15 @@ $ docker build -t otus-highload -f ./tools/Dockerfile .
 ```bash
 $ docker run -d --rm -v "$(pwd)"/config.yaml:/app/config.yaml -p 8000:8000 otus-highload
 ```
+
+## Нагрузочное тестирование
+
+```bash
+ docker run --rm -i grafana/k6 run - <./tools/k6.js
+```
+
+or
+
+```bash
+k6 run k6.js
+```

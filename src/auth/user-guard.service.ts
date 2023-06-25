@@ -1,12 +1,4 @@
-import {
-    applyDecorators,
-    CanActivate,
-    ExecutionContext,
-    ForbiddenException,
-    Injectable,
-    NotFoundException,
-    UseGuards,
-} from '@nestjs/common';
+import { applyDecorators, CanActivate, ExecutionContext, ForbiddenException, Injectable, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { ConfigService } from '../core';
@@ -22,7 +14,7 @@ export class UserGuardService implements CanActivate {
         if (!client_token) throw new ForbiddenException();
 
         const user = await this.verifyToken(client_token);
-        if (!user) throw new NotFoundException();
+        if (!user) throw new ForbiddenException();
         request.user = user;
 
         return true;
